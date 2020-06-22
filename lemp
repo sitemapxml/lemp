@@ -183,7 +183,9 @@ mkdir /var/www/$hostname
 cp files/vhost.conf /etc/nginx/sites-available/$hostname.conf
 sed -i "s/sn_default/$hostname/g" /etc/nginx/sites-available/$hostname.conf
 sed -i "s/dir_default/$hostname/g" /etc/nginx/sites-available/$hostname.conf
+ln /etc/nginx/sites-available/$hostname.conf /etc/nginx/sites-enabled/$hostname.conf
 rm /etc/nginx/sites-available/default
+rm /etc/nginx/sites-enabled/default
 systemctl restart nginx
 
 # Dodavanje UNIX korisnika
@@ -220,7 +222,7 @@ while true
 			apt-get install python3-certbot-nginx -y
 
 			# Instalacija Let's encrypt SSL sertifikata
-			certbot --apache --non-interactive --agree-tos --domains $hostname --email $email
+			certbot --nginx --non-interactive --agree-tos --domains $hostname --email $email
 
       CERTFILE="/etc/letsencrypt/live/$hostname/fullchain.pem"
       KEYFILE="/etc/letsencrypt/live/$hostname/privkey.pem"
